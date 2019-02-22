@@ -1,8 +1,8 @@
 # Instructions
 
-During this test, we wil examine your Github skills as you will work in a team of engineers, and require that you follow the standard Quality Assurance (QA). During the text you will work on your own, but later on when hired you will work in a team.
+During this test, we wil examine your Github skills as you will work in a team of engineers, and require that you follow the standard Quality Assurance (QA) process. During the test you will work on your own, but later on when hired you will work in a team.
 
-You will need to push your code daily to this Github Repository. The more commits per day you can make during your progress, the better it is for our team to review. Helpful comments on each commit are preferred to see how you manage your Git commits.
+You will need to push your code daily to this Github repository. The more commits per day you can make during your progress, the better it is for our team to review. Helpful comments on each commit are preferred to see how you manage your Git commits.
 
 # App Description
 
