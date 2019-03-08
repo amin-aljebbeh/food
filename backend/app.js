@@ -32,7 +32,7 @@ app.get('/contractor_customers/:contractor_id', (req, res) => {
     console.log("successfully Fetched")
 
     const users = rows.map((row) => {
-      return {name: row.name, email: row.email,notes:row.notes,sketch_link:row.sketch_link}
+      return {contractor_id:row.contractor_id ,name: row.name,phone: row.phone, email: row.email,notes:row.notes,sketch_link:row.sketch_link}
     })
 
     res.json(users)
