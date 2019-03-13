@@ -87,8 +87,8 @@ app.post('/addcustomer', (req, res) => {
     password: "",
     database: "Contractor"
   })
-  const queryString = "INSERT INTO customers (contractor_id,name,email,notes,sketch_link ) VALUES (?,?,?,?,?) "
-  connection.query(queryString,[ req.body.contractor_id , req.body.name,req.body.email,req.body.notes,req.body.sketch_link ],(err, rows, fields) => {
+  const queryString = "INSERT INTO customers (contractor_id,name,email,phone,notes,sketch_link ) VALUES (?,?,?,?,?,?) "
+  connection.query(queryString,[ req.body.contractor_id , req.body.name,req.body.email,req.body.phone,req.body.notes,req.body.sketch_link ],(err, rows, fields) => {
     if (err) {
       console.log("Failed to query for users: " + err)
       res.sendStatus(500)
