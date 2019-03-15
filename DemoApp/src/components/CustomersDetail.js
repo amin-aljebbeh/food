@@ -3,6 +3,7 @@ import { Text, View, Image, Linking } from 'react-native';
 import Card from './Card';
 import CardSection from './CardSection';
 import Button from './Button'
+import { Actions } from 'react-native-router-flux';
 
 
 const CustomersDetail = ({record}) => {
@@ -14,8 +15,6 @@ const CustomersDetail = ({record}) => {
         imageStyle,
         thumbnailStyle,thumnailContainerStyle } = styles;
   return (
-
-    
     <Card styles={cardStyle}>
       <CardSection>
       <View style={thumnailContainerStyle}>
@@ -31,8 +30,8 @@ const CustomersDetail = ({record}) => {
       <CardSection>
         <Image style={imageStyle} source={{uri: sketch_link}} />
       </CardSection>
-      <CardSection>
-        <Button whenClicked={() => Linking.openURL(sketch_link)}>
+      <CardSection> 
+        <Button whenClicked={() => Actions.contractorcustomerview()}>
             View Full Details 
         </Button>
       </CardSection>

@@ -3,6 +3,7 @@ import { Scene, Router, Actions } from 'react-native-router-flux';
 import CustomerList from './CustomerList'
 import AddNewCustomer from './AddNewCustomer'
 import Canvas from './Canvas'
+import ContractorCustomerView from './ContractorCustomerView'
 
 const RouterComponent = () => {
   return (
@@ -20,6 +21,12 @@ const RouterComponent = () => {
           key="addnewcustomer"
           component={AddNewCustomer}
           title="Add Customer Section"
+        />
+
+        <Scene
+          key="contractorcustomerview"
+          component={ContractorCustomerView}
+          title="Customer Detail"
         />
       </Scene>
     </Router>

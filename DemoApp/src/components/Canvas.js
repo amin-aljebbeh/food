@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
 import Sketch from 'react-native-sketch';
+import firebase from 'firebase'
 import {
   Button,
-  Image,
   Modal,
   StatusBar,
   StyleSheet,
-  Text,
+  Platform,
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import RNFetchBlob from 'rn-fetch-blob'
+
+
+// Prepare Blob support
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 export default class Canvas extends Component {
   state = {
@@ -22,7 +31,7 @@ export default class Canvas extends Component {
   };
 
   onChange = () => {
-    console.log('onChange event'); // eslint-disable-line no-console
+    console.log('onChange event'); 
   };
 
   clear = () => {
@@ -32,6 +41,9 @@ export default class Canvas extends Component {
   save = () => {
     this.sketch.save().then(({ path }) => {
       this.setState({ path });
+      console.log('Image Saved : ' + path);
+      alert('Image saved!' + path);
+      this.Upload_Image(path);
     });
   };
 
@@ -51,6 +63,37 @@ export default class Canvas extends Component {
       />
     );
   };
+
+  Upload_Image(uri, mime = 'application/octet-stream') {
+    return new Promise((resolve, reject) => {
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+      let uploadBlob = null
+      console.log('Image URi is : ' + uri)
+      const imageRef = firebase.storage().ref('files').child('file.png')
+      console.log('image Ref is : ******** ' + imageRef)
+      fs.readFile(uploadUri, 'base64')
+        .then((data) => {
+          return Blob.build(data, { type: `${mime};BASE64` })
+        })
+        .then((Blob) => {
+          uploadBlob = Blob
+          return imageRef.put(Blob, { contentType: mime })
+        })
+        .then(() => {
+          uploadBlob.close()
+          return imageRef.getDownloadURL()
+        })
+        .then((url) => {
+          resolve(url)
+          this.props.callback(url)
+          console.log(url)
+
+        })
+        .catch((error) => {
+          reject(error)
+      })
+    })
+  }
 
   render() {
     return (
@@ -81,14 +124,6 @@ export default class Canvas extends Component {
           <Button color="#1DBD21" onPress={this.save} title="Save  ✅" />
         </View>
         <Modal animationType="slide" visible={!!this.state.path}>
-          <View style={styles.modal}>
-            <Text style={styles.title}>Here is the image you created.</Text>
-            <Image
-              resizeMode="contain"
-              source={{ uri: `file://${this.state.path}` }}
-              style={styles.image}
-            />
-          </View>
         </Modal>
       </View>
     );

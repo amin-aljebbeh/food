@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import  {Button, CardSection, Input, Card}  from './common'
+import { View, ScrollView } from 'react-native';
+import  {Button, CardSection, Input}  from './common'
 import Canvas   from './Canvas'
+import axios from 'axios'
 
 export default class AddNewCustomer extends Component {
 
@@ -29,32 +30,40 @@ export default class AddNewCustomer extends Component {
         
         console.log("Contractor id : " + contractor_id + " name " + name + " email :" + email + "phone : " + phone + " notes : " + notes + " link : " + sketch_link);
 
-		
-		fetch('http://127.0.0.1:3003/addcustomer', {
-			method: 'post',
-			header:{
-				Accept: 'application/json',
-				'Content-type': 'application/json',
-			},
-			body: console.log(JSON.stringify({
-                contractor_id: contractor_id,
-                name: name,
-                email: email,
-                phone: phone,
-                notes: notes,
-                sketch_link: sketch_link,
-			})),
-			
-		}).then(response => response.json())
-        .then(response => {
         
-        console.log(response);  
-        }
-        )
+        const params = {
+            contractor_id: contractor_id,
+            name: name,
+            email: email,
+            phone: phone,
+            notes: notes,
+            sketch_link: sketch_link
+  };
+
+  axios.post('http://127.0.0.1:3003/addcustomer', params, {
+       headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+       },
+  })
     }
+
+    getLinkToSave(sketch_link){
+        this.setState({sketch_link});
+    }
+
+
   render() {
     return (
     <View>
+
+    <CardSection>
+        <Input
+          label="ID"
+          placeholder="1"
+          onChangeText= {contractor_id => this.setState({contractor_id})}
+        />
+      </CardSection>
+
         <CardSection>
         <Input
           label="Name"
@@ -65,7 +74,7 @@ export default class AddNewCustomer extends Component {
 
        <CardSection>
           <Input
-            label="email"
+            label="Email"
             placeholder="email@gmail.com"
             value={this.props.email}
             onChangeText= {email => this.setState({email})}
@@ -74,7 +83,7 @@ export default class AddNewCustomer extends Component {
 
          <CardSection>
           <Input
-            label="phone"
+            label="Phone"
             placeholder="555-555-5555"
             value={this.props.phone}
             onChangeText= {phone => this.setState({phone})}
@@ -83,23 +92,14 @@ export default class AddNewCustomer extends Component {
 
          <CardSection>
           <Input
-            label="notes"
+            label="Notes"
             placeholder="Any Text about this customer to remember"
             value={this.props.notes}
             onChangeText= {notes => this.setState({notes})}
           />
         </CardSection>
-
-         <CardSection>
-          <Input
-            label="link"
-            placeholder="www.google.com"
-            value={this.props.sketch_link}
-            onChangeText= {sketch_link => this.setState({sketch_link})}
-          />
-        </CardSection>
         <View style={styles.canvasStyle}>
-            <Canvas  />
+            <Canvas  callback={this.getLinkToSave.bind(this)} />
         </View>
         <CardSection>
             <Button onPress={this.addCustomer}>
