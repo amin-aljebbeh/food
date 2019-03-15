@@ -66,7 +66,7 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
     console.log("successfully Fetched")
 
     const users = rows.map((row) => {
-      return {name: row.name, email: row.email,notes:row.notes,sketch_link:row.sketch_link}
+      return {name: row.name, email: row.email,phone: row.phone, notes:row.notes,sketch_link:row.sketch_link}
     })
 
     res.json(users)
@@ -78,9 +78,13 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 
 // to add new customer to the Database 
 app.post('/addcustomer', (req, res) => {
+  var keys = [];
+  for(var key in req.body){
+    keys.push(key);
+ }
 
-  console.log("Fetching user with contractor_id : " + req.body.contractor_id)
-
+ inser_data = JSON.parse(keys)
+ console.log( 'ID ' + inser_data.contractor_id + ' name ' +inser_data.name + 'email ' +inser_data.email + ' phone ' + inser_data.phone + 'notes' +inser_data.notes+ 'link ' + inser_data.sketch_link)
   const connection = mysql.createConnection({
     host: "192.168.64.2",
     user: "root",
@@ -88,11 +92,11 @@ app.post('/addcustomer', (req, res) => {
     database: "Contractor"
   })
   const queryString = "INSERT INTO customers (contractor_id,name,email,phone,notes,sketch_link ) VALUES (?,?,?,?,?,?) "
-  connection.query(queryString,[ req.body.contractor_id , req.body.name,req.body.email,req.body.phone,req.body.notes,req.body.sketch_link ],(err, rows, fields) => {
+  connection.query(queryString,[ inser_data.contractor_id , inser_data.name,inser_data.email,inser_data.phone,inser_data.notes,inser_data.email,inser_data.sketch_link],(err, rows, fields) => {
     if (err) {
       console.log("Failed to query for users: " + err)
       res.sendStatus(500)
-      return
+      returncd
       // throw err
     }
     else
