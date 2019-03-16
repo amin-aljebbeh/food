@@ -9,7 +9,7 @@ export default class AddNewCustomer extends Component {
     constructor(props){
 		super(props)
 		this.state={
-            contractor_id:'',
+            contractor_id:'1',
 			      name:'',
 		      	email:'', 
             phone:'',
@@ -25,27 +25,41 @@ export default class AddNewCustomer extends Component {
 		const {name} = this.state;
 		const {email} = this.state;
 		const {phone} = this.state;
-        const {notes} = this.state;
-        const {sketch_link} = this.state;
+    const {notes} = this.state;
+    const {sketch_link} = this.state;
         
         console.log("Contractor id : " + contractor_id + " name " + name + " email :" + email + "phone : " + phone + " notes : " + notes + " link : " + sketch_link);
 
-        
-        const params = {
-            contractor_id: contractor_id,
-            name: name,
-            email: email,
-            phone: phone,
-            notes: notes,
-            sketch_link: sketch_link
-  };
 
-  axios.post('http://127.0.0.1:3003/addcustomer', params, {
 
-        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+  /*axios.post('http://127.0.0.1:3003/addcustomer',JSON.stringify(params), {
+
+           headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
        ,
   })
-    }
+    }*/
+
+    const params = {
+      contractor_id:contractor_id,
+      name: name,
+      email: email,
+      phone: phone,
+      notes: notes,
+      sketch_link: sketch_link
+};
+
+    fetch('http://127.0.0.1:3003/addcustomer', {
+      method: 'POST',
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({params}),
+    });
+  }
 
     getLinkToSave(sketch_link){
         this.setState({sketch_link});
@@ -55,15 +69,6 @@ export default class AddNewCustomer extends Component {
   render() {
     return (
     <View>
-
-    <CardSection>
-        <Input
-          label="ID"
-          placeholder="1"
-          onChangeText= {contractor_id => this.setState({contractor_id})}
-          value={'1'}
-        />
-      </CardSection>
 
         <CardSection>
         <Input
