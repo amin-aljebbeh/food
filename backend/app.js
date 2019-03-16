@@ -1,18 +1,17 @@
 // load our app server using express somehow....
-const express = require('express')
-const app = express()
-const morgan = require('morgan')
 const mysql = require('mysql')
-const bodyParser = require('body-parser')
 
-//---------------
+var express = require('express')
+var bodyParser = require('body-parser')
 
-app.use(bodyParser.json());
+var app = express()
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json({ type: 'application/*+json' }));
+// create application/json parser
+var jsonParser = bodyParser.json()
 
-app.use(morgan('combined'))
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 //To get contractor customers grid view details 
 app.get('/contractor_customers/:contractor_id', (req, res) => {
@@ -83,10 +82,8 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 
 
 // to add new customer to the Database 
-app.post('/addcustomer', (req, res) => {
-
-
-
+app.post('/addcustomer',jsonParser, (req, res) => {
+    console.log(req.body.params)
   const connection = mysql.createConnection({
     host: "192.168.64.2",
     user: "root",
@@ -96,7 +93,7 @@ app.post('/addcustomer', (req, res) => {
 
 
   const queryString = "INSERT INTO customers (contractor_id,name,email,phone,notes,sketch_link ) VALUES (?,?,?,?,?,?) "
-  connection.query(queryString,[ req.body.contractor_id , req.body.name,req.body.email,req.body.phone,req.body.notes,req.body.sketch_link],(err, rows, fields) => {
+  connection.query(queryString,[ req.body.params.contractor_id , req.body.params.name,req.body.params.email, req.body.params.phone,req.body.params.notes,req.body.params.sketch_link],(err, rows, fields) => {
     if (err) {
       console.log("Failed to query for users: " + err)
       res.sendStatus(500)
@@ -120,7 +117,7 @@ app.post('/addcustomer', (req, res) => {
 app.post('/login', (req, res) => {
 
  var keys = [];
- for(var key in request.body){
+ for(var key in req.body){
    keys.push(key);
 }
 
