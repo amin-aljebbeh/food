@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sketch from 'react-native-sketch';
+import { Sketch } from 'react-native-sketch';
 import firebase from 'firebase'
 import {
   Button,
@@ -11,8 +11,9 @@ import {
   View,
 } from 'react-native';
 
-import RNFetchBlob from 'rn-fetch-blob'
+//import RNFetchBlob from 'rn-fetch-blob'
 
+import RNFetchBlob from 'react-native-fetch-blob'
 
 // Prepare Blob support
 const Blob = RNFetchBlob.polyfill.Blob
@@ -42,7 +43,7 @@ export default class Canvas extends Component {
     this.sketch.save().then(({ path }) => {
       this.setState({ path });
       console.log('Image Saved : ' + path);
-      alert('Image saved!' + path);
+      alert('Image Saved !');
       this.Upload_Image(path);
     });
   };
@@ -65,11 +66,12 @@ export default class Canvas extends Component {
   };
 
   Upload_Image(uri, mime = 'application/octet-stream') {
+    var milliseconds = (new Date).getTime();
     return new Promise((resolve, reject) => {
       const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
       let uploadBlob = null
       console.log('Image URi is : ' + uri)
-      const imageRef = firebase.storage().ref('files').child('file.png')
+      const imageRef = firebase.storage().ref('images').child(milliseconds+'.png')
       console.log('image Ref is : ******** ' + imageRef)
       fs.readFile(uploadUri, 'base64')
         .then((data) => {

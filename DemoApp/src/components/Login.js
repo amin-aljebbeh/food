@@ -32,8 +32,6 @@ class Login extends Component {
     {
         Actions.main()
         this.setState({loading: false });
-
-
     }
     else
     {
