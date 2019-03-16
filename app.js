@@ -14,7 +14,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 //To get contractor customers grid view details 
-app.get('/contractor_customers/:contractor_id', (req, res) => {
+app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contractor_id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id)
 
   const connection = mysql.createConnection({
@@ -47,7 +47,7 @@ app.get('/contractor_customers/:contractor_id', (req, res) => {
 })
 
 // to get specific customer details
-app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
+app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contractor_id/:id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id + "customer id " + req.params.id)
 
   const connection = mysql.createConnection({
@@ -82,7 +82,7 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 
 
 // to add new customer to the Database 
-app.post('/addcustomer',jsonParser, (req, res) => {
+app.post('https://contractor-backend.herokuapp.com/addcustomer',jsonParser, (req, res) => {
     console.log(req.body.params)
   const connection = mysql.createConnection({
     host: "https://databases.000webhost.com/",
@@ -114,7 +114,7 @@ app.post('/addcustomer',jsonParser, (req, res) => {
 
 
 // Contractor Login 
-app.post('/login', jsonParser, (req, res) => {
+app.post('https://contractor-backend.herokuapp.com/login', jsonParser, (req, res) => {
 
 console.log("Fetching user with username: " + req.body.params.username)
 
