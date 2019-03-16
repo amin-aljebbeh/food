@@ -18,10 +18,10 @@ app.get('/contractor_customers/:contractor_id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id)
 
   const connection = mysql.createConnection({
-    host: "192.168.64.2",
-    user: "root",
-    password: "",
-    database: "Contractor"
+    host: "unsummoned-exit.000webhostapp.com",
+    user: "id8992321_amin",
+    password: "aminaljebbeh",
+    database: "id8992321_contractor"
   })
 
   const id = req.params.contractor_id
@@ -51,10 +51,10 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id + "customer id " + req.params.id)
 
   const connection = mysql.createConnection({
-    host: "192.168.64.2",
-    user: "root",
-    password: "",
-    database: "Contractor"
+    host: "unsummoned-exit.000webhostapp.com",
+    user: "id8992321_amin",
+    password: "aminaljebbeh",
+    database: "id8992321_contractor"
   })
 
   const cnotractor_id = req.params.contractor_id
@@ -85,10 +85,10 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 app.post('/addcustomer',jsonParser, (req, res) => {
     console.log(req.body.params)
   const connection = mysql.createConnection({
-    host: "192.168.64.2",
-    user: "root",
-    password: "",
-    database: "Contractor"
+    host: "unsummoned-exit.000webhostapp.com",
+    user: "id8992321_amin",
+    password: "aminaljebbeh",
+    database: "id8992321_contractor"
   })
 
 
@@ -119,10 +119,10 @@ app.post('/login', jsonParser, (req, res) => {
 console.log("Fetching user with username: " + req.body.params.username)
 
   const connection = mysql.createConnection({
-    host: "192.168.64.2",
-    user: "root",
-    password: "",
-    database: "Contractor"
+    host: "unsummoned-exit.000webhostapp.com",
+    user: "id8992321_amin",
+    password: "aminaljebbeh",
+    database: "id8992321_contractor"
   })
   const queryString = "SELECT id from contractors where username=? and password =?"
   connection.query(queryString,[ req.body.params.username , req.body.params.password],(err, rows, fields) => {
