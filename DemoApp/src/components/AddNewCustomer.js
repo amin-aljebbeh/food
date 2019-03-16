@@ -10,8 +10,8 @@ export default class AddNewCustomer extends Component {
 		super(props)
 		this.state={
             contractor_id:'',
-			name:'',
-			email:'', 
+			      name:'',
+		      	email:'', 
             phone:'',
             notes:'',
             sketch_link:''			
@@ -41,9 +41,9 @@ export default class AddNewCustomer extends Component {
   };
 
   axios.post('http://127.0.0.1:3003/addcustomer', params, {
-       headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-       },
+
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+       ,
   })
     }
 
@@ -61,6 +61,7 @@ export default class AddNewCustomer extends Component {
           label="ID"
           placeholder="1"
           onChangeText= {contractor_id => this.setState({contractor_id})}
+          value={'1'}
         />
       </CardSection>
 

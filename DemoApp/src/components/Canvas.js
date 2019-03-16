@@ -65,11 +65,12 @@ export default class Canvas extends Component {
   };
 
   Upload_Image(uri, mime = 'application/octet-stream') {
+    var milliseconds = (new Date).getTime();
     return new Promise((resolve, reject) => {
       const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
       let uploadBlob = null
       console.log('Image URi is : ' + uri)
-      const imageRef = firebase.storage().ref('files').child('file.png')
+      const imageRef = firebase.storage().ref('images').child(milliseconds+'.png')
       console.log('image Ref is : ******** ' + imageRef)
       fs.readFile(uploadUri, 'base64')
         .then((data) => {

@@ -7,19 +7,22 @@ import { Actions } from 'react-native-router-flux';
 
 
 const CustomersDetail = ({record}) => {
-  const {contractor_id, name, email, phone, notes, sketch_link} = record;
+  const {contractor_id,customer_id, name, email, phone, notes, sketch_link} = record;
   const {
         headerContentStyle,
         cardStyle,
         headerTextStyle,
         imageStyle,
         thumbnailStyle,thumnailContainerStyle } = styles;
+        console.log('from customer Details ' + customer_id)
+
   return (
+    
     <Card styles={cardStyle}>
       <CardSection>
       <View style={thumnailContainerStyle}>
         <Image style={thumbnailStyle}
-        source={{uri: "/Users/amin/Desktop/react/contractors/angstron_interview20/DemoApp/src/components/info.png" }}
+        source={{uri: 'https://drive.google.com/file/d/1iS_cCulvrbMmUWj1mvv62QfKh_-uoyNJ/view?usp=sharing' }}
          />
       </View>
       <View style = {headerContentStyle}>
@@ -31,7 +34,7 @@ const CustomersDetail = ({record}) => {
         <Image style={imageStyle} source={{uri: sketch_link}} />
       </CardSection>
       <CardSection> 
-        <Button whenClicked={() => Actions.contractorcustomerview()}>
+        <Button whenClicked={() => Actions.contractorcustomerview({customer_id})}>
             View Full Details 
         </Button>
       </CardSection>

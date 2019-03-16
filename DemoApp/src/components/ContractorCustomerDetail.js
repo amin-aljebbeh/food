@@ -18,7 +18,7 @@ const ContractorCustomerDetail = ({record}) => {
       <CardSection>
       <View style={thumnailContainerStyle}>
         <Image style={thumbnailStyle}
-        source={{uri: '/Users/amin/Desktop/react/contractors/angstron_interview20/DemoApp/src/components/info.png' }}
+        source={{uri: 'https://drive.google.com/file/d/1iS_cCulvrbMmUWj1mvv62QfKh_-uoyNJ/view?usp=sharing' }}
          />      
       </View>
       <View style = {headerContentStyle}>
@@ -66,3 +66,4 @@ const styles = {
   }
 };
 export default ContractorCustomerDetail;
+

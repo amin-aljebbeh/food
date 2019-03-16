@@ -30,11 +30,15 @@ export const uploadImage = (uri,mime = 'application/octet-stream') => {
             })
             .then((url) => {
                 resolve(url)
-                storeREfrence(url,sessionId)
+                storeRerence(url,sessionId)
             })
             .catch((error) => {
                 reject(error)
             })
         })
     }
+}
+
+const storeRerence = (downloadUrl, sessionId) => {
+    
 }

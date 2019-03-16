@@ -8,7 +8,7 @@ class ContractorCustomerView extends Component {
   
 
   componentWillMount() {
-      axios.get('http://127.0.0.1:3003/contractor_customers/1/1')
+      axios.get('http://127.0.0.1:3003/contractor_customers/1/'+this.props.customer_id)
       .then(response => this.setState({CustomerDetail: response.data}));
     }
 renderAlbums() {
