@@ -5,9 +5,15 @@ const morgan = require('morgan')
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
 
+//---------------
+
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ type: 'application/*+json' }));
+
 app.use(morgan('combined'))
+
 //To get contractor customers grid view details 
 app.get('/contractor_customers/:contractor_id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id)
@@ -78,12 +84,8 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 
 // to add new customer to the Database 
 app.post('/addcustomer', (req, res) => {
-  var keys = [];
-  for(var key in req.body){
-    keys.push(key);
- }
 
- inser_data = JSON.parse(keys)
+
 
   const connection = mysql.createConnection({
     host: "192.168.64.2",
@@ -91,8 +93,10 @@ app.post('/addcustomer', (req, res) => {
     password: "",
     database: "Contractor"
   })
+
+
   const queryString = "INSERT INTO customers (contractor_id,name,email,phone,notes,sketch_link ) VALUES (?,?,?,?,?,?) "
-  connection.query(queryString,[ inser_data.contractor_id , inser_data.name,inser_data.email,inser_data.phone,inser_data.notes,inser_data.email,inser_data.sketch_link],(err, rows, fields) => {
+  connection.query(queryString,[ req.body.contractor_id , req.body.name,req.body.email,req.body.phone,req.body.notes,req.body.sketch_link],(err, rows, fields) => {
     if (err) {
       console.log("Failed to query for users: " + err)
       res.sendStatus(500)
@@ -115,9 +119,8 @@ app.post('/addcustomer', (req, res) => {
 // Contractor Login 
 app.post('/login', (req, res) => {
 
-
  var keys = [];
- for(var key in req.body){
+ for(var key in request.body){
    keys.push(key);
 }
 
