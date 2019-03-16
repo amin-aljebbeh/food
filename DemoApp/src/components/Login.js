@@ -1,41 +1,47 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { Button, Card, CardSection, Input, Spinner } from './common';
-import axios from 'axios'
 import {  Actions } from 'react-native-router-flux';
 
 class Login extends Component {
-  state = { username: '', password: '', error: '', loading: false, auth:false };
+  state = { username: '', password: '', error: '', loading: false, auth:false, dataa:null };
 
-  onButtonPress() {
-    Actions.main()
-    const { username, password } = this.state;
+  onButtonPress = async () => {
+    //Actions.main()
 
-    this.setState({ error: '', loading: false });
+    const { username, password, dataa } = this.state;
+
+    this.setState({ error: '', loading: true });
 
     const params = {
       username: username,
       password: password,
-    };
-    axios.post('http://127.0.0.1:3003/login', params, {
-       headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-       },
-  }).then(function (response) {
-    console.log(response.data);
-    if(response.data == '1')
+    }
+    const response = await fetch('http://127.0.0.1:3003/login', {
+      method: 'POST',
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({params})
+    });
+    const json = await response.json();
+    // just log ‘json’
+    console.log(json);
+    if (json == '1')
     {
+        Actions.main()
+        this.setState({loading: false });
 
-      this.onLoginSuccess.bind(this);
-      
+
     }
     else
     {
-      this.onLoginFail.bind(this);
-    }
-  })
+      alert('Error Username or Password ');
+      this.setState({loading: false });
 
-  }
+    }
+}
 
   onLoginFail() {
     this.setState({ error: 'Authentication Failed', loading: false });
@@ -51,6 +57,7 @@ class Login extends Component {
   }
 
   renderButton() {
+
     if (this.state.loading) {
       return <Spinner size="small" />;
     }
