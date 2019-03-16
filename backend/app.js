@@ -114,15 +114,9 @@ app.post('/addcustomer',jsonParser, (req, res) => {
 
 
 // Contractor Login 
-app.post('/login', (req, res) => {
+app.post('/login', jsonParser, (req, res) => {
 
- var keys = [];
- for(var key in req.body){
-   keys.push(key);
-}
-
-inser_data = JSON.parse(keys)
-console.log("Fetching user with username: " + inser_data.username)
+console.log("Fetching user with username: " + req.body.params.username)
 
   const connection = mysql.createConnection({
     host: "192.168.64.2",
@@ -131,7 +125,7 @@ console.log("Fetching user with username: " + inser_data.username)
     database: "Contractor"
   })
   const queryString = "SELECT id from contractors where username=? and password =?"
-  connection.query(queryString,[ inser_data.username , inser_data.password],(err, rows, fields) => {
+  connection.query(queryString,[ req.body.params.username , req.body.params.password],(err, rows, fields) => {
     if (rows.length == 0) {
       console.log('Error Username or Password ')
       res.json('0')
