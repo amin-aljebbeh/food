@@ -5,6 +5,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 
 var app = express()
+var port = process.env.PORT || 3003;
 
 // create application/json parser
 var jsonParser = bodyParser.json()
@@ -142,6 +143,6 @@ console.log("Fetching user with username: " + req.body.params.username)
 
 
 // localhost:3003
-app.listen((process.evn.Port||3003), () => {
+app.listen(port, () => {
    console.log("sucsessfuly server started ")
 })
