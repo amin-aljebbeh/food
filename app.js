@@ -5,7 +5,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 
 var app = express()
-
+var port = process.env.PORT || 3003;
 // create application/json parser
 var jsonParser = bodyParser.json()
 
@@ -14,7 +14,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 //To get contractor customers grid view details 
-app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contractor_id', (req, res) => {
+app.get('/contractor_customers/:contractor_id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id)
 
   const connection = mysql.createConnection({
@@ -47,7 +47,7 @@ app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contract
 })
 
 // to get specific customer details
-app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contractor_id/:id', (req, res) => {
+app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id + "customer id " + req.params.id)
 
   const connection = mysql.createConnection({
@@ -82,7 +82,7 @@ app.get('https://contractor-backend.herokuapp.com/contractor_customers/:contract
 
 
 // to add new customer to the Database 
-app.post('https://contractor-backend.herokuapp.com/addcustomer',jsonParser, (req, res) => {
+app.post('/addcustomer',jsonParser, (req, res) => {
     console.log(req.body.params)
   const connection = mysql.createConnection({
     host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com:3306",
@@ -114,7 +114,7 @@ app.post('https://contractor-backend.herokuapp.com/addcustomer',jsonParser, (req
 
 
 // Contractor Login 
-app.post('https://contractor-backend.herokuapp.com/l  ogin', jsonParser, (req, res) => {
+app.post('/login', jsonParser, (req, res) => {
 
 console.log("Fetching user with username: " + req.body.params.username)
 
