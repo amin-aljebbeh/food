@@ -18,7 +18,7 @@ app.get('/contractor_customers/:contractor_id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id)
 
   const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com:3306",
+    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
     user: "uqmifjlrydloih6s",
     password: "D9PTJwAn59gm8FGwLJWk",
     database: "bsnfzusmwtkaex6igzct"
@@ -51,7 +51,7 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
   console.log("Fetching user with contractor_id: " + req.params.contractor_id + "customer id " + req.params.id)
 
   const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com:3306",
+    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
     user: "uqmifjlrydloih6s",
     password: "D9PTJwAn59gm8FGwLJWk",
     database: "bsnfzusmwtkaex6igzct"
@@ -85,7 +85,7 @@ app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
 app.post('/addcustomer',jsonParser, (req, res) => {
     console.log(req.body.params)
   const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com:3306",
+    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
     user: "uqmifjlrydloih6s",
     password: "D9PTJwAn59gm8FGwLJWk",
     database: "bsnfzusmwtkaex6igzct"
@@ -119,7 +119,7 @@ app.post('/login', jsonParser, (req, res) => {
 console.log("Fetching user with username: " + req.body.params.username)
 
   const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com:3306",
+    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
     user: "uqmifjlrydloih6s",
     password: "D9PTJwAn59gm8FGwLJWk",
     database: "bsnfzusmwtkaex6igzct"
@@ -140,6 +140,6 @@ console.log("Fetching user with username: " + req.body.params.username)
    //res.end()
 })
 
-app.listen(process.evn.PORT, () => {
+app.listen(port, () => {
    console.log("sucsessfuly server started ")
 })
