@@ -3,143 +3,84 @@ const mysql = require('mysql')
 
 var express = require('express')
 var bodyParser = require('body-parser')
+var async = require('async');
 
 var app = express()
-var port = process.env.PORT || 3003;
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-
-//To get contractor customers grid view details 
-app.get('/contractor_customers/:contractor_id', (req, res) => {
-  console.log("Fetching user with contractor_id: " + req.params.contractor_id)
-
-  const connection = mysql.createConnection({
+    // connection configurations
+var dbConn = mysql.createConnection({
+    multipleStatements: true,
     host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
     user: "uqmifjlrydloih6s",
     password: "D9PTJwAn59gm8FGwLJWk",
     database: "bsnfzusmwtkaex6igzct"
-  })
+});
+// connect to database
+dbConn.connect();
+console.log("connected");
 
-  const id = req.params.contractor_id
-  const queryString = "SELECT * FROM customers WHERE contractor_id = ?"
-  connection.query(queryString, [id], (err, rows, fields) => {
-    if (err) {
-      console.log("Failed to query for users: " + err)
-      res.sendStatus(500)
-      return
-      // throw err
+var ingred = [];
+var steps = [];
+
+
+// Retrieve all Categories 
+app.get('/categories', function(req, res) {
+    console.log("Fetching Categories");
+    dbConn.query('SELECT * FROM categories', function(error, results, fields) {
+        if (error) throw error;
+        var responsee = res.send(results);
+        // results = new Map(JSON.parse(res.send(results)));
+
+        //return new Map(JSON.parse(results));
+        return responsee;
+    });
+});
+
+
+// Retrieve Meal Information by id 
+app.get('/category/:id', function(req, res) {
+    let user_id = req.params.id;
+    if (!user_id) {
+        return res.status(400).send({ error: true, message: 'Please provide Meal_Id' });
     }
+    dbConn.query('SELECT * FROM meals INNER JOIN category_meal_relation ON meals.id = category_meal_relation.meal_id WHERE category_meal_relation.category_id =?', user_id, function(error, results, fields) {
+        if (error) throw error;
+        return res.send(results);
+    });
+});
 
-    console.log("successfully Fetched")
 
-    const users = rows.map((row) => {
-      return {contractor_id:row.contractor_id ,name: row.name,phone: row.phone, email: row.email,notes:row.notes,sketch_link:row.sketch_link}
-    })
+// Retrieve Meal Information by id 
+app.get('/meal/:id', function(req, res) {
+    let user_id = req.params.id;
+    if (!user_id) {
+        return res.status(400).send({ error: true, message: 'Please provide Meal_Id' });
+    } else {
+        dbConn.query('SELECT ingredients FROM meals_ingredients WHERE meal_id =?', [user_id], function(error, results) {
+            if (error) throw error;
+            var ingreds = results.map((row) => {
+                return Object.values(row);
+            });
+            ingred = [].concat.apply([], ingreds);
 
-    res.json(users)
-  })
-
-  // res.end()
-})
-
-// to get specific customer details
-app.get('/contractor_customers/:contractor_id/:id', (req, res) => {
-  console.log("Fetching user with contractor_id: " + req.params.contractor_id + "customer id " + req.params.id)
-
-  const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
-    user: "uqmifjlrydloih6s",
-    password: "D9PTJwAn59gm8FGwLJWk",
-    database: "bsnfzusmwtkaex6igzct"
-  })
-
-  const cnotractor_id = req.params.contractor_id
-  const id = req.params.id
-  const queryString = "SELECT * FROM customers WHERE contractor_id = ? and id = ?"
-  connection.query(queryString, [cnotractor_id,id], (err, rows, fields) => {
-    if (err) {
-      console.log("Failed to query for users: " + err)
-      res.sendStatus(500)
-      return
-      // throw err
+        });
+        dbConn.query('SELECT steps FROM meals_steps WHERE meal_id =?', [user_id], function(error, results2) {
+            if (error) throw error;
+            var stepss = results2.map((row) => {
+                return Object.values(row);
+            });
+            steps = [].concat.apply([], stepss);
+            return res.send({ ingredients: ingred, steps: steps })
+        });
     }
+});
 
-    console.log("successfully Fetched")
-
-    const users = rows.map((row) => {
-      return {name: row.name, email: row.email,phone: row.phone, notes:row.notes,sketch_link:row.sketch_link}
-    })
-
-    res.json(users)
-  })
-
-  // res.end()
-})
-
-
-// to add new customer to the Database 
-app.post('/addcustomer',jsonParser, (req, res) => {
-    console.log(req.body.params)
-  const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
-    user: "uqmifjlrydloih6s",
-    password: "D9PTJwAn59gm8FGwLJWk",
-    database: "bsnfzusmwtkaex6igzct"
-  })
-
-
-  const queryString = "INSERT INTO customers (contractor_id,name,email,phone,notes,sketch_link ) VALUES (?,?,?,?,?,?) "
-  connection.query(queryString,[ req.body.params.contractor_id , req.body.params.name,req.body.params.email, req.body.params.phone,req.body.params.notes,req.body.params.sketch_link],(err, rows, fields) => {
-    if (err) {
-      console.log("Failed to query for users: " + err)
-      res.sendStatus(500)
-      returncd
-      // throw err
-    }
-    else
-    {
-      console.log("successfully Fetched")
-
-    res.json('1')
-    }
-  })
-
-   //res.end()
-})
-
-
-
-// Contractor Login 
-app.post('/login', jsonParser, (req, res) => {
-
-console.log("Fetching user with username: " + req.body.params.username)
-
-  const connection = mysql.createConnection({
-    host: "bsnfzusmwtkaex6igzct-mysql.services.clever-cloud.com",
-    user: "uqmifjlrydloih6s",
-    password: "D9PTJwAn59gm8FGwLJWk",
-    database: "bsnfzusmwtkaex6igzct"
-  })
-  const queryString = "SELECT id from contractors where username=? and password =?"
-  connection.query(queryString,[ req.body.params.username , req.body.params.password],(err, rows, fields) => {
-    if (rows.length == 0) {
-      console.log('Error Username or Password ')
-      res.json('0')
-    }
-    else
-    {
-      console.log("successfully Fetched")
-      res.json('1')
-    }
-  })
-
-   //res.end()
-})
 
 app.listen(port, () => {
-   console.log("sucsessfuly server started ")
+    console.log("sucsessfuly server started ")
 })
